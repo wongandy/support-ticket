@@ -19,8 +19,8 @@ return new class extends Migration
             $table->unsignedBigInteger('assigned_to')->references('id')->on('users')->nullable();
             $table->string('title');
             $table->string('description');
-            $table->string('priority');
-            $table->string('status');
+            $table->string('priority')->default('normal');
+            $table->string('status')->default('open');
             $table->timestamps();
         });
     }

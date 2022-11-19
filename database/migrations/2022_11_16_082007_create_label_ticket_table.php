@@ -13,8 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('role_id')->after('id')->nullable()->constrained();
+        Schema::create('label_ticket', function (Blueprint $table) {
+            $table->foreignId('label_id');
+            $table->foreignId('ticket_id');
         });
     }
 
@@ -25,8 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('role_id');
-        });
+        Schema::dropIfExists('label_ticket');
     }
 };
