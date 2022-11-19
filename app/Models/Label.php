@@ -10,4 +10,9 @@ class Label extends Model
     use HasFactory;
 
     protected $fillable = ['name'];
+
+    public function scopeVisible($query)
+    {
+        return $query->where('is_visible', true);
+    }
 }
