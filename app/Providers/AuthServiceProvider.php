@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use App\Models\Ticket;
 use App\Policies\TicketPolicy;
+use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
