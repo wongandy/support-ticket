@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Scopes\TicketScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Ticket extends Model
 {
     use HasFactory;
+    use TicketScope;
 
     protected $fillable = [
         'title',

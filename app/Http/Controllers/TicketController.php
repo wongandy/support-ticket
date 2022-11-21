@@ -21,9 +21,15 @@ class TicketController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(): View
+    public function index(Request $request): View
     {
         $tickets = Ticket::with('user', 'assignedToUser', 'labels', 'categories')
+            ->when($request->has('priority'), function (Builder $query) use ($request) {
+                $query->where('priority', $request->priority);
+            })
+            ->when($request->has('status'), function (Builder $query) use ($request) {
+                $query->where('status', $request->status);
+            })
             ->when(auth()->user()->isAgent(), function (Builder $query) {
                 $query->whereassignedTo(auth()->id());
             })

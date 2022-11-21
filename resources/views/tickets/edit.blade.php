@@ -86,7 +86,7 @@
                 </select>
             </div>
 
-            @if (auth()->user()->isAdmin())
+            @if (auth()->user()->hasRole('admin'))
                 <div class="mt-4">
                     <x-input-label for="assign_to" :value="__('Assign To')"/>
                     <select name="assign_to" id="assign_to" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus-within:text-primary-600 focus:border-primary-300 focus:ring-primary-200 focus:ring focus:ring-opacity-50">

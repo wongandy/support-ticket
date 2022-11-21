@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Traits\RoleTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -13,6 +15,7 @@ use PhpParser\Node\Expr\FuncCall;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+    use RoleTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -53,21 +56,6 @@ class User extends Authenticatable
     public function tickets()
     {
         return $this->hasMany(Ticket::class);
-    }
-
-    public function isAdmin(): bool
-    {
-        return $this->role_id == Role::ADMIN_ID;
-    }
-
-    public function isAgent(): bool
-    {
-        return $this->role_id == Role::AGENT_ID;
-    }
-
-    public function isUser(): bool
-    {
-        return $this->role_id == Role::USER_ID;
     }
 
     public function role(): BelongsTo
