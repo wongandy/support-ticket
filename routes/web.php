@@ -1,8 +1,10 @@
 <?php
 
-use App\Http\Controllers\TicketController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\LabelController;
+use App\Http\Controllers\TicketController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,13 +21,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 require __DIR__.'/auth.php';
 
-Route::middleware(['auth.session'])->group(function () {
+Route::middleware(['auth', 'auth.session'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->middleware(['auth', 'verified'])->name('dashboard');
+
     Route::view('about', 'about')->name('about');
 
     Route::get('users', [\App\Http\Controllers\UserController::class, 'index'])->name('users.index');
@@ -33,5 +35,10 @@ Route::middleware(['auth.session'])->group(function () {
     Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
     Route::put('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
     Route::resource('tickets', TicketController::class);
-    Route::resource('users', UserController::class)->middleware('is_admin');
+
+    Route::middleware('is_admin')->group(function () {
+        Route::resource('users', UserController::class);
+        Route::resource('categories', CategoryController::class);
+        Route::resource('labels', LabelController::class);
+    });
 });
