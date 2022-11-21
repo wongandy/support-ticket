@@ -42,7 +42,7 @@ class TicketPolicy
      */
     public function create(User $user): Response
     {
-        return ($user->isAdmin() || $user->isUser())
+        return ($user->hasrole(['admin', 'user']))
                 ? Response::allow()
                 : Response::denyAsNotFound();
     }
@@ -56,7 +56,7 @@ class TicketPolicy
      */
     public function update(User $user, Ticket $ticket): Response
     {
-        if ($user->isAdmin()) {
+        if ($user->hasRole('admin')) {
             return Response::allow();
         }
 
@@ -77,7 +77,7 @@ class TicketPolicy
      */
     public function delete(User $user, Ticket $ticket): Response
     {
-        return ($user->isAdmin())
+        return ($user->hasRole('admin'))
                 ? Response::allow()
                 : Response::denyAsNotFound();
     }
