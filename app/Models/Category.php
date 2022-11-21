@@ -9,10 +9,15 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'is_visible'];
 
     public function scopeVisible($query)
     {
         return $query->where('is_visible', true);
+    }
+
+    public function tickets()
+    {
+        return $this->belongsToMany(Ticket::class);
     }
 }
