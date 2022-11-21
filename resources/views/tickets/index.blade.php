@@ -37,7 +37,7 @@
                         <th class="px-4 py-3">Priority</th>
                         <th class="px-4 py-3">Categories</th>
                         <th class="px-4 py-3">Labels</th>
-                        @if (auth()->user()->isAdmin())
+                        @if (auth()->user()->hasRole('admin'))
                             <th class="px-4 py-3">Assigned To</th>
                         @endif
                         <th class="px-4 py-3"></th>
@@ -68,7 +68,7 @@
                                         <span class="rounded-full bg-gray-50 px-2 py-1">{{ $label->name }}</span>
                                     @endforeach
                                 </td>
-                                @if (auth()->user()->isAdmin())
+                                @if (auth()->user()->hasRole('admin'))
                                     <td class="px-4 py-3 text-sm">
                                         {{ $ticket->assignedToUser->name ?? '' }}
                                     </td>
