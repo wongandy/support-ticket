@@ -8,11 +8,12 @@ use App\Models\Ticket;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\StoreTicketRequest;
-use App\Models\Role;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\StoreTicketRequest;
+use App\Notifications\NotifyAdminAboutUserCreatedTicketNotification;
+use App\Notifications\NotifyAgentOfAssignedTicketNotification;
+use Illuminate\Database\Eloquent\Builder;
 
 class TicketController extends Controller
 {
@@ -70,14 +71,18 @@ class TicketController extends Controller
         
         DB::transaction(function () use ($request) {
             $ticket = auth()->user()->tickets()->create($request->only('title', 'description', 'priority'));
-            
             $ticket->labels()->attach($request->labels);
             $ticket->categories()->attach($request->categories);
 
-            if ($request->assign_to) {
+            if ($request->assigned_to) {
                 $ticket->update([
-                    'assigned_to' => $request->assign_to
+                    'assigned_to' => $request->assigned_to
                 ]);
+
+                User::find($request->assigned_to)->notify(new NotifyAgentOfAssignedTicketNotification($ticket));
+            } else {
+                User::admins()
+                    ->each(fn ($user) => $user->notify(new NotifyAdminAboutUserCreatedTicketNotification(($ticket))));
             }
         });
 
@@ -122,15 +127,13 @@ class TicketController extends Controller
     public function update(StoreTicketRequest $request, Ticket $ticket): RedirectResponse
     {
         $this->authorize('update', $ticket);
-
-        $ticket->update($request->only('title', 'description', 'status', 'priority'));
+        
+        $ticket->update($request->only('title', 'description', 'status', 'priority', 'assigned_to'));
         $ticket->labels()->sync($request->labels);
         $ticket->categories()->sync($request->categories);
-
-        if ($request->assign_to) {
-            $ticket->update([
-                'assigned_to' => $request->assign_to
-            ]);
+        
+        if ($ticket->wasChanged('assigned_to')) {
+            User::find($request->assigned_to)->notify(new NotifyAgentOfAssignedTicketNotification($ticket));
         }
 
         return to_route('tickets.index');
