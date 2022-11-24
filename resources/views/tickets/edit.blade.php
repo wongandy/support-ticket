@@ -88,11 +88,11 @@
 
             @if (auth()->user()->hasRole('admin'))
                 <div class="mt-4">
-                    <x-input-label for="assign_to" :value="__('Assign To')"/>
-                    <select name="assign_to" id="assign_to" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus-within:text-primary-600 focus:border-primary-300 focus:ring-primary-200 focus:ring focus:ring-opacity-50">
+                    <x-input-label for="assigned_to" :value="__('Assign To')"/>
+                    <select name="assigned_to" id="assigned_to" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus-within:text-primary-600 focus:border-primary-300 focus:ring-primary-200 focus:ring focus:ring-opacity-50">
                         <option value="">-- SELECT AGENT --</option>
                         @foreach ($agents as $id => $agent)
-                            <option value="{{ $id }}" @selected(old('assign_to', $ticket->assigned_to) == $id)>{{ $agent }}</option>
+                            <option value="{{ $id }}" @selected(old('assigned_to', $ticket->assigned_to) == $id)>{{ $agent }}</option>
                         @endforeach
                     </select>
                 </div>

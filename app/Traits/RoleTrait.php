@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Models\Role;
+use Illuminate\Database\Eloquent\Builder;
 
 trait RoleTrait
 {
