@@ -41,6 +41,7 @@ class LabelController extends Controller
     {
         Label::create([
             'name' => $request->name,
+            'slug' => $request->name,
             'is_visible' => $request->has('is_visible'),
         ]);
 

@@ -3,39 +3,20 @@
 namespace App\Models;
 
 use App\Scopes\TicketScope;
+use Coderflex\LaravelTicket\Models\Ticket as ModelsTicket;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Ticket extends Model
+class Ticket extends ModelsTicket
 {
     use HasFactory;
     use TicketScope;
 
     protected $fillable = [
         'title',
-        'description',
+        'message',
         'priority',
         'status',
         'assigned_to',
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    public function assignedToUser()
-    {
-        return $this->belongsTo(User::class, 'assigned_to');
-    }
-
-    public function labels()
-    {
-        return $this->belongsToMany(Label::class);
-    }
-
-    public function categories()
-    {
-        return $this->belongsToMany(Category::class);
-    }
 }

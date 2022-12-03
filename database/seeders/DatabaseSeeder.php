@@ -24,6 +24,8 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             UserSeeder::class,
             AgentSeeder::class,
+            LabelSeeder::class,
+            CategorySeeder::class,
             TicketSeeder::class,
         ]);
     }

@@ -22,7 +22,7 @@ class TicketFactory extends Factory
             'user_id' => User::inRandomOrder()->whereRoleId(Role::USER_ID)->first(),
             'assigned_to' => User::inRandomOrder()->whereRoleId(Role::AGENT_ID)->first(),
             'title' => fake()->sentence(),
-            'description' => fake()->sentence(),
+            'message' => fake()->sentence(),
         ];
     }
 }

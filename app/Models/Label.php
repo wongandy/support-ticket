@@ -2,17 +2,15 @@
 
 namespace App\Models;
 
+use App\Concerns\HasVisibility;
+use Coderflex\LaravelTicket\Models\Label as ModelsLabel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Label extends Model
+class Label extends ModelsLabel
 {
     use HasFactory;
+    use HasVisibility;
 
-    protected $fillable = ['name', 'is_visible'];
-
-    public function scopeVisible($query)
-    {
-        return $query->where('is_visible', true);
-    }
+    protected $fillable = ['name', 'slug', 'is_visible'];
 }

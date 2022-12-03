@@ -2,22 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Concerns\HasVisibility;
+use Coderflex\LaravelTicket\Models\Category as ModelsCategory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Category extends Model
+class Category extends ModelsCategory
 {
     use HasFactory;
+    use HasVisibility;
 
-    protected $fillable = ['name', 'is_visible'];
-
-    public function scopeVisible($query)
-    {
-        return $query->where('is_visible', true);
-    }
-
-    public function tickets()
-    {
-        return $this->belongsToMany(Ticket::class);
-    }
+    protected $fillable = ['name', 'slug', 'is_visible'];
 }
