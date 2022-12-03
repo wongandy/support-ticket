@@ -70,19 +70,17 @@ class TicketController extends Controller
         $this->authorize('create', Ticket::class);
         
         DB::transaction(function () use ($request) {
-            $ticket = auth()->user()->tickets()->create($request->only('title', 'description', 'priority'));
-            $ticket->labels()->attach($request->labels);
-            $ticket->categories()->attach($request->categories);
+            $ticket = auth()->user()->tickets()->create($request->only('title', 'message', 'priority'));
+            $ticket->attachLabels($request->labels);
+            $ticket->attachCategories($request->categories);
 
             if ($request->assigned_to) {
-                $ticket->update([
-                    'assigned_to' => $request->assigned_to
-                ]);
+                $ticket->assignTo($request->assigned_to);
 
-                User::find($request->assigned_to)->notify(new NotifyAgentOfAssignedTicketNotification($ticket));
+                // User::find($request->assigned_to)->notify(new NotifyAgentOfAssignedTicketNotification($ticket));
             } else {
-                User::admins()
-                    ->each(fn ($user) => $user->notify(new NotifyAdminAboutUserCreatedTicketNotification(($ticket))));
+                // User::admins()
+                //     ->each(fn ($user) => $user->notify(new NotifyAdminAboutUserCreatedTicketNotification(($ticket))));
             }
         });
 
@@ -128,12 +126,12 @@ class TicketController extends Controller
     {
         $this->authorize('update', $ticket);
         
-        $ticket->update($request->only('title', 'description', 'status', 'priority', 'assigned_to'));
-        $ticket->labels()->sync($request->labels);
-        $ticket->categories()->sync($request->categories);
+        $ticket->update($request->only('title', 'message', 'status', 'priority', 'assigned_to'));
+        $ticket->syncLabels($request->labels);
+        $ticket->syncCategories($request->categories);
         
         if ($ticket->wasChanged('assigned_to')) {
-            User::find($request->assigned_to)->notify(new NotifyAgentOfAssignedTicketNotification($ticket));
+            // User::find($request->assigned_to)->notify(new NotifyAgentOfAssignedTicketNotification($ticket));
         }
 
         return to_route('tickets.index');

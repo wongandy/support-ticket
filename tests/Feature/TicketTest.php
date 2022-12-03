@@ -115,7 +115,7 @@ class TicketTest extends TestCase
         $response = $this->actingAs($agent)->get('/tickets/' . $ticket->id . '/edit');
         
         $response->assertSee('value="' . $ticket->title . '"', false);
-        $response->assertSeeText($ticket->description);
+        $response->assertSeeText($ticket->message);
         $response->assertStatus(200);
     }
 
@@ -140,7 +140,7 @@ class TicketTest extends TestCase
 
         $response = $this->actingAs($agent)->put('/tickets/' . $ticket->id, [
             'title' => 'test title',
-            'description' => 'test description',
+            'message' => 'test message',
             'categories' => [1, 2],
             'labels' => [1],
         ]);
@@ -156,7 +156,7 @@ class TicketTest extends TestCase
 
         $response = $this->actingAs($agent)->put('/tickets/' . $ticket->id, [
             'title' => 'test title',
-            'description' => 'test description',
+            'message' => 'test message',
             'categories' => [1, 2],
             'labels' => [1],
         ]);
@@ -173,13 +173,13 @@ class TicketTest extends TestCase
 
         $response = $this->actingAs($agent)->put('/tickets/' . $ticket->id, [
             'title' => '',
-            'description' => '',
+            'message' => '',
             'categories' => [],
             'labels' => [],
         ]);
         
         $response->assertStatus(302);
-        $response->assertInvalid(['title','description','categories','labels']);
+        $response->assertInvalid(['title','message','categories','labels']);
     }
 
     public function test_agent_cannot_see_delete_button_in_tickets_page()

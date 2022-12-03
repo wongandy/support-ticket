@@ -40,9 +40,9 @@
             </div>
 
             <div class="mt-4">
-                <x-input-label for="description" :value="__('Description')"/>
-                <textarea id="description" name="description" class="mt-1 block h-32 w-full rounded-md border-gray-300 shadow-sm focus-within:text-primary-600 focus:border-primary-300 focus:ring-primary-200 focus:ring focus:ring-opacity-50">{{ old('description', $ticket->description) }}</textarea>
-                <x-input-error :messages="$errors->get('description')" class="mt-2" />
+                <x-input-label for="message" :value="__('message')"/>
+                <textarea id="message" name="message" class="mt-1 block h-32 w-full rounded-md border-gray-300 shadow-sm focus-within:text-primary-600 focus:border-primary-300 focus:ring-primary-200 focus:ring focus:ring-opacity-50">{{ old('message', $ticket->message) }}</textarea>
+                <x-input-error :messages="$errors->get('message')" class="mt-2" />
             </div>
 
             
