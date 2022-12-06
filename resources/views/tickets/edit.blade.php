@@ -24,7 +24,7 @@
 
     <div class="p-4 bg-white rounded-lg shadow-md">
 
-        <form action="{{ route('tickets.update', $ticket) }}" method="POST">
+        <form action="{{ route('tickets.update', $ticket) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -40,9 +40,9 @@
             </div>
 
             <div class="mt-4">
-                <x-input-label for="description" :value="__('Description')"/>
-                <textarea id="description" name="description" class="mt-1 block h-32 w-full rounded-md border-gray-300 shadow-sm focus-within:text-primary-600 focus:border-primary-300 focus:ring-primary-200 focus:ring focus:ring-opacity-50">{{ old('description', $ticket->description) }}</textarea>
-                <x-input-error :messages="$errors->get('description')" class="mt-2" />
+                <x-input-label for="message" :value="__('Message')"/>
+                <textarea id="message" name="message" class="mt-1 block h-32 w-full rounded-md border-gray-300 shadow-sm focus-within:text-primary-600 focus:border-primary-300 focus:ring-primary-200 focus:ring focus:ring-opacity-50">{{ old('message', $ticket->message) }}</textarea>
+                <x-input-error :messages="$errors->get('message')" class="mt-2" />
             </div>
 
             
@@ -69,6 +69,11 @@
             </div>
 
             <div class="mt-4">
+                <x-input-label for="upload" :value="__('Upload Image')"/>
+                <x-text-input type="file" id="upload" name="upload" />
+            </div>
+
+            <div class="mt-4">
                 <x-input-label for="priority" :value="__('Priority')"/>
                 <select name="priority" id="priority" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus-within:text-primary-600 focus:border-primary-300 focus:ring-primary-200 focus:ring focus:ring-opacity-50">
                     @foreach (App\Enums\Tickets\Priorities::cases() as $priority)
@@ -88,11 +93,11 @@
 
             @if (auth()->user()->hasRole('admin'))
                 <div class="mt-4">
-                    <x-input-label for="assign_to" :value="__('Assign To')"/>
-                    <select name="assign_to" id="assign_to" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus-within:text-primary-600 focus:border-primary-300 focus:ring-primary-200 focus:ring focus:ring-opacity-50">
+                    <x-input-label for="assigned_to" :value="__('Assign To')"/>
+                    <select name="assigned_to" id="assigned_to" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus-within:text-primary-600 focus:border-primary-300 focus:ring-primary-200 focus:ring focus:ring-opacity-50">
                         <option value="">-- SELECT AGENT --</option>
                         @foreach ($agents as $id => $agent)
-                            <option value="{{ $id }}" @selected(old('assign_to', $ticket->assigned_to) == $id)>{{ $agent }}</option>
+                            <option value="{{ $id }}" @selected(old('assigned_to', $ticket->assigned_to) == $id)>{{ $agent }}</option>
                         @endforeach
                     </select>
                 </div>

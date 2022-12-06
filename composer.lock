@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "22c6e97430ea44b0057ce65c7c7fe3b1",
+    "content-hash": "aa806bed2b0e7a0b97855863ec7559f0",
     "packages": [
         {
             "name": "brick/math",
@@ -61,6 +61,88 @@
                 }
             ],
             "time": "2022-08-10T22:54:19+00:00"
+        },
+        {
+            "name": "coderflex/laravel-ticket",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/coderflexx/laravel-ticket.git",
+                "reference": "79074164ef2a2f34915c7b322abcc0f54d6bbacd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/coderflexx/laravel-ticket/zipball/79074164ef2a2f34915c7b322abcc0f54d6bbacd",
+                "reference": "79074164ef2a2f34915c7b322abcc0f54d6bbacd",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^9.0",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.13.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^6.0",
+                "nunomaduro/larastan": "^2.0.1",
+                "orchestra/testbench": "^7.0",
+                "pestphp/pest": "^1.21",
+                "pestphp/pest-plugin-laravel": "^1.1",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Coderflex\\LaravelTicket\\LaravelTicketServiceProvider"
+                    ],
+                    "aliases": {
+                        "LaravelTicket": "Coderflex\\LaravelTicket\\Facades\\LaravelTicket"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Coderflex\\LaravelTicket\\": "src",
+                    "Coderflex\\LaravelTicket\\Database\\Factories\\": "database/factories"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Oussama Sid",
+                    "email": "oussama@coderflex.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Laravel Ticket System, to help you manage your tickets eaisly",
+            "homepage": "https://github.com/coderflexx/laravel-ticket",
+            "keywords": [
+                "coderflex",
+                "laravel",
+                "laravel-ticket"
+            ],
+            "support": {
+                "issues": "https://github.com/coderflexx/laravel-ticket/issues",
+                "source": "https://github.com/coderflexx/laravel-ticket/tree/v1.2.0"
+            },
+            "funding": [
+                {
+                    "url": "https://www.buymeacoffee.com/ousid",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://ko-fi.com/ousid",
+                    "type": "ko_fi"
+                }
+            ],
+            "time": "2022-11-05T22:33:08+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -2894,6 +2976,66 @@
                 }
             ],
             "time": "2022-11-05T23:03:38+00:00"
+        },
+        {
+            "name": "spatie/laravel-package-tools",
+            "version": "1.13.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-package-tools.git",
+                "reference": "4af8e608184471b5568af6265ebb0ca0025c131a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-package-tools/zipball/4af8e608184471b5568af6265ebb0ca0025c131a",
+                "reference": "4af8e608184471b5568af6265ebb0ca0025c131a",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^9.28",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.5",
+                "orchestra/testbench": "^7.7",
+                "pestphp/pest": "^1.22",
+                "phpunit/phpunit": "^9.5.24",
+                "spatie/pest-plugin-test-time": "^1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\LaravelPackageTools\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Tools for creating Laravel packages",
+            "homepage": "https://github.com/spatie/laravel-package-tools",
+            "keywords": [
+                "laravel-package-tools",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-package-tools/issues",
+                "source": "https://github.com/spatie/laravel-package-tools/tree/1.13.7"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-11-15T09:10:09+00:00"
         },
         {
             "name": "symfony/console",

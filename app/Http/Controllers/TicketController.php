@@ -8,11 +8,13 @@ use App\Models\Ticket;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\StoreTicketRequest;
-use App\Models\Role;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\StoreTicketRequest;
+use Illuminate\Database\Eloquent\Builder;
+use App\Notifications\NotifyAgentOfAssignedTicketNotification;
+use App\Notifications\NotifyAdminAboutUserCreatedTicketNotification;
 
 class TicketController extends Controller
 {
@@ -69,15 +71,28 @@ class TicketController extends Controller
         $this->authorize('create', Ticket::class);
         
         DB::transaction(function () use ($request) {
-            $ticket = auth()->user()->tickets()->create($request->only('title', 'description', 'priority'));
-            
-            $ticket->labels()->attach($request->labels);
-            $ticket->categories()->attach($request->categories);
+            $ticket = auth()->user()->tickets()->create($request->only('title', 'message', 'priority'));
+            $ticket->attachLabels($request->labels);
+            $ticket->attachCategories($request->categories);
 
-            if ($request->assign_to) {
+            if ($request->has('upload')) {
+                $file = $request->file('upload');
+                $fileName = $file->hashName();
+
                 $ticket->update([
-                    'assigned_to' => $request->assign_to
+                    'upload' => $fileName
                 ]);
+                
+                $file->store('uploads/' . auth()->user()->id, 'public');
+            }
+
+            if ($request->assigned_to) {
+                $ticket->assignTo($request->assigned_to);
+
+                // User::find($request->assigned_to)->notify(new NotifyAgentOfAssignedTicketNotification($ticket));
+            } else {
+                // User::admins()
+                //     ->each(fn ($user) => $user->notify(new NotifyAdminAboutUserCreatedTicketNotification(($ticket))));
             }
         });
 
@@ -122,15 +137,26 @@ class TicketController extends Controller
     public function update(StoreTicketRequest $request, Ticket $ticket): RedirectResponse
     {
         $this->authorize('update', $ticket);
+        
+        $ticket->update($request->only('title', 'message', 'status', 'priority', 'assigned_to'));
+        $ticket->syncLabels($request->labels);
+        $ticket->syncCategories($request->categories);
+        
+        if ($request->has('upload')) {
+            $file = $request->file('upload');
+            $fileName = $file->hashName();
 
-        $ticket->update($request->only('title', 'description', 'status', 'priority'));
-        $ticket->labels()->sync($request->labels);
-        $ticket->categories()->sync($request->categories);
+            Storage::disk('public')->delete('uploads/' . $ticket->user->id . '/' . $ticket->upload);
 
-        if ($request->assign_to) {
             $ticket->update([
-                'assigned_to' => $request->assign_to
-            ]);
+                'upload' => $fileName
+            ]);            
+
+            $file->store('uploads/' . $ticket->user->id, 'public');
+        }
+
+        if ($ticket->wasChanged('assigned_to')) {
+            // User::find($request->assigned_to)->notify(new NotifyAgentOfAssignedTicketNotification($ticket));
         }
 
         return to_route('tickets.index');

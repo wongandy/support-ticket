@@ -40,6 +40,7 @@ class CategoryController extends Controller
     {
         Category::create([
             'name' => $request->name,
+            'slug' => $request->name,
             'is_visible' => $request->has('is_visible'),
         ]);
 

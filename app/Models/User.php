@@ -4,18 +4,24 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Scopes\UserScope;
 use App\Traits\RoleTrait;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Coderflex\LaravelTicket\Concerns\HasTickets;
 use Laravel\Sanctum\HasApiTokens;
 use PhpParser\Node\Expr\FuncCall;
+use Illuminate\Notifications\Notifiable;
+use Coderflex\LaravelTicket\Contracts\CanUseTickets;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements CanUseTickets
 {
     use HasApiTokens, HasFactory, Notifiable;
     use RoleTrait;
+    use UserScope;
+    use HasTickets;
 
     /**
      * The attributes that are mass assignable.
@@ -47,16 +53,6 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    public function scopeAgents($query)
-    {
-        return $query->where('role_id', Role::AGENT_ID);
-    }
-
-    public function tickets()
-    {
-        return $this->hasMany(Ticket::class);
-    }
 
     public function role(): BelongsTo
     {
