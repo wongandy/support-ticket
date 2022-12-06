@@ -24,7 +24,7 @@
 
     <div class="p-4 bg-white rounded-lg shadow-md">
 
-        <form action="{{ route('tickets.store') }}" method="POST">
+        <form action="{{ route('tickets.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <div>
@@ -39,7 +39,7 @@
             </div>
 
             <div class="mt-4">
-                <x-input-label for="message" :value="__('message')"/>
+                <x-input-label for="message" :value="__('Message')"/>
                 <textarea id="message" name="message" class="mt-1 block h-32 w-full rounded-md border-gray-300 shadow-sm focus-within:text-primary-600 focus:border-primary-300 focus:ring-primary-200 focus:ring focus:ring-opacity-50">{{ old('message') }}</textarea>
                 <x-input-error :messages="$errors->get('message')" class="mt-2" />
             </div>
@@ -66,6 +66,11 @@
                 <x-input-error :messages="$errors->get('labels')" class="mt-2" />
             </div>
             
+            <div class="mt-4">
+                <x-input-label for="upload" :value="__('Upload Image')"/>
+                <x-text-input type="file" id="upload" name="upload" />
+            </div>
+
             <div class="mt-4">
                 <x-input-label for="priority" :value="__('Priority')"/>
 
