@@ -26,7 +26,11 @@ class NotifyAdminAboutUserCreatedTicketNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        if (config('app.enable_notifications')) {
+            return ['mail'];
+        }
+
+        return [];
     }
 
     /**

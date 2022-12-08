@@ -89,10 +89,10 @@ class TicketController extends Controller
             if ($request->assigned_to) {
                 $ticket->assignTo($request->assigned_to);
 
-                // User::find($request->assigned_to)->notify(new NotifyAgentOfAssignedTicketNotification($ticket));
+                User::find($request->assigned_to)->notify(new NotifyAgentOfAssignedTicketNotification($ticket));
             } else {
-                // User::admins()
-                //     ->each(fn ($user) => $user->notify(new NotifyAdminAboutUserCreatedTicketNotification(($ticket))));
+                User::admins()
+                    ->each(fn ($user) => $user->notify(new NotifyAdminAboutUserCreatedTicketNotification(($ticket))));
             }
         });
 
