@@ -3,6 +3,10 @@
 
 A web app for creating support tickets.
 
+## Screenshots
+![admin_dashboard](https://user-images.githubusercontent.com/3273498/206614132-9891127b-070d-4905-a79a-de4fb25d18e9.png)
+![create_ticket](https://user-images.githubusercontent.com/3273498/206614141-4c5d156a-cdae-4eae-98e4-111737e803ac.png)
+
 ## Features
 
 - Login/register user functionality
@@ -15,6 +19,7 @@ A web app for creating support tickets.
 **Front-end framework:** TailwindCSS
 
 **Back-end framework:** Laravel
+![DB__transaction](https://user-images.githubusercontent.com/3273498/206613371-97f54e4f-9732-44ee-9c30-c0b6277b917b.jpg)
 
 ## Installation
 
