@@ -2,12 +2,14 @@
 
 namespace Tests\Feature;
 
-use App\Models\Role;
 use Tests\TestCase;
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Ticket;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 
 class TicketTest extends TestCase
 {
@@ -229,5 +231,25 @@ class TicketTest extends TestCase
         $response->assertStatus(302);
         $this->assertDatabaseMissing('tickets', $ticket->toArray());
         $this->assertDatabaseCount('tickets', 0);
+    }
+
+    public function test_user_can_upload_file()
+    {
+        Storage::fake('public');
+        $user = User::factory()->create();
+        $fileUpload = UploadedFile::fake()->image('avatar.jpg');
+
+        $response = $this->actingAs($user)->post('/tickets', [
+            'title' => 'test title',
+            'message' => 'test message',
+            'priority' => 'low',
+            'upload' => $fileUpload,
+            'labels' => [1],
+            'categories' => [1],
+        ]);
+
+        $ticket = Ticket::latest()->first();
+        $this->assertEquals($fileUpload->hashName(), $ticket->upload);
+        Storage::disk('public')->assertExists('uploads/' . $user->id . '/'. $fileUpload->hashName());
     }
 }
