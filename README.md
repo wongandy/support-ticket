@@ -3,16 +3,16 @@
 
 A web app for creating support tickets.
 
-## Screenshots
-![admin_dashboard](https://user-images.githubusercontent.com/3273498/206614132-9891127b-070d-4905-a79a-de4fb25d18e9.png)
-![create_ticket](https://user-images.githubusercontent.com/3273498/206614141-4c5d156a-cdae-4eae-98e4-111737e803ac.png)
-
 ## Features
 
 - Login/register user functionality
 - Users can create support tickets
 - Admins can assign tickets to agents
 - Agents work on tickets assigned to them
+
+## Screenshots
+![admin_dashboard](https://user-images.githubusercontent.com/3273498/206614132-9891127b-070d-4905-a79a-de4fb25d18e9.png)
+![create_ticket](https://user-images.githubusercontent.com/3273498/206614141-4c5d156a-cdae-4eae-98e4-111737e803ac.png)
 
 ## Tech Stack
 
