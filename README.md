@@ -12,7 +12,7 @@ A web app for creating support tickets.
 
 ## Screenshots
 ![admin_dashboard](https://user-images.githubusercontent.com/3273498/206614132-9891127b-070d-4905-a79a-de4fb25d18e9.png)
-![create_ticket](https://user-images.githubusercontent.com/3273498/206616433-b899c2f3-a8f1-4a42-b0dd-3a80dd709e11.png)
+![create_ticket](https://user-images.githubusercontent.com/3273498/206616789-f34b43a9-8cfe-40c8-bfc3-b6feab086b5f.png)
 
 ## Tech Stack
 
