@@ -19,7 +19,6 @@ A web app for creating support tickets.
 **Front-end framework:** TailwindCSS
 
 **Back-end framework:** Laravel
-![DB__transaction](https://user-images.githubusercontent.com/3273498/206613371-97f54e4f-9732-44ee-9c30-c0b6277b917b.jpg)
 
 ## Installation
 
