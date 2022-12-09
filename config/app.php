@@ -212,5 +212,5 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
-    'enable_notifications' => env('ENABLE_NOTIFICATIONS', true),
+    'enable_notifications' => env('ENABLE_NOTIFICATIONS', false),
 ];
