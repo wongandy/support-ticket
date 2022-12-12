@@ -6,9 +6,10 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
-
+        <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <!-- Scripts -->
+        <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
         <script src="{{ asset('js/init-alpine.js') }}"></script>
 </head>
 <body>
@@ -36,5 +37,6 @@
         </main>
     </div>
 </div>
+@yield('scripts')
 </body>
 </html>
