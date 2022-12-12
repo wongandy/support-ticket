@@ -7,10 +7,10 @@ use App\Models\Label;
 use App\Models\Ticket;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Actions\UploadFileAction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreTicketRequest;
 use Illuminate\Database\Eloquent\Builder;
 use App\Notifications\NotifyAgentOfAssignedTicketNotification;
@@ -76,16 +76,9 @@ class TicketController extends Controller
             $ticket->attachCategories($request->categories);
 
             if ($request->has('upload')) {
-                $file = $request->file('upload');
-                $fileName = $file->hashName();
-
-                $ticket->update([
-                    'upload' => $fileName
-                ]);
-                
-                $file->store('uploads/' . auth()->user()->id, 'public');
+                (new UploadFileAction())->execute($ticket, $request->upload);
             }
-
+            
             if ($request->assigned_to) {
                 $ticket->assignTo($request->assigned_to);
 
@@ -143,20 +136,11 @@ class TicketController extends Controller
         $ticket->syncCategories($request->categories);
         
         if ($request->has('upload')) {
-            $file = $request->file('upload');
-            $fileName = $file->hashName();
-
-            Storage::disk('public')->delete('uploads/' . $ticket->user->id . '/' . $ticket->upload);
-
-            $ticket->update([
-                'upload' => $fileName
-            ]);            
-
-            $file->store('uploads/' . $ticket->user->id, 'public');
+            (new UploadFileAction())->execute($ticket, $request->upload);
         }
 
         if ($ticket->wasChanged('assigned_to')) {
-            // User::find($request->assigned_to)->notify(new NotifyAgentOfAssignedTicketNotification($ticket));
+            User::find($request->assigned_to)->notify(new NotifyAgentOfAssignedTicketNotification($ticket));
         }
 
         return to_route('tickets.index');

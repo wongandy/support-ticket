@@ -34,13 +34,13 @@
                          name="title"
                          class="block w-full"
                          value="{{ old('title') }}"
-                         />
+                         required />
                 <x-input-error :messages="$errors->get('title')" class="mt-2" />
             </div>
 
             <div class="mt-4">
                 <x-input-label for="message" :value="__('Message')"/>
-                <textarea id="message" name="message" class="mt-1 block h-32 w-full rounded-md border-gray-300 shadow-sm focus-within:text-primary-600 focus:border-primary-300 focus:ring-primary-200 focus:ring focus:ring-opacity-50">{{ old('message') }}</textarea>
+                <textarea id="message" name="message" class="mt-1 block h-32 w-full rounded-md border-gray-300 shadow-sm focus-within:text-primary-600 focus:border-primary-300 focus:ring-primary-200 focus:ring focus:ring-opacity-50" required>{{ old('message') }}</textarea>
                 <x-input-error :messages="$errors->get('message')" class="mt-2" />
             </div>
 
@@ -94,11 +94,31 @@
             @endif
 
             <div class="mt-4">
-                <x-primary-button>
+                <x-primary-button id="ticket-submit">
                     {{ __('Submit') }}
                 </x-primary-button>
             </div>
         </form>
 
     </div>
+
+    @section('scripts')
+    <script>
+        const inputElement = document.querySelector('input[id="upload"]');
+        const pond = FilePond.create(inputElement, {
+            onaddfilestart: (file) => { document.getElementById('ticket-submit').disabled = true; },
+            onprocessfile: (files) => { document.getElementById('ticket-submit').disabled = false; },
+        });
+
+        pond.setOptions({
+            server: {
+                process: '/upload',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                },
+                revert: '/delete-upload',
+            }
+        });
+    </script>
+    @endsection
 </x-app-layout>

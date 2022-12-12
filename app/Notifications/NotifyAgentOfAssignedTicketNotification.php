@@ -2,7 +2,6 @@
 
 namespace App\Notifications;
 
-use App\Models\Ticket;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,14 +11,11 @@ class NotifyAgentOfAssignedTicketNotification extends Notification
 {
     use Queueable;
 
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
-    public function __construct(public Ticket $ticket)
+    public $ticket;
+
+    public function __construct($ticket)
     {
-        
+        $this->ticket = $ticket;
     }
 
     /**
@@ -30,7 +26,11 @@ class NotifyAgentOfAssignedTicketNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        if (config('app.enable_notifications')) {
+            return ['mail'];
+        }
+
+        return [];
     }
 
     /**

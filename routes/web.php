@@ -6,6 +6,7 @@ use App\Http\Controllers\LabelController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UploadFileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,8 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
     Route::put('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
     Route::resource('tickets', TicketController::class);
+    Route::post('upload', [UploadFileController::class, 'store']);
+    Route::delete('delete-upload', [UploadFileController::class, 'destroy']);
 
     Route::middleware(['role:admin|agent'])->group(function () {
         Route::get('/dashboard', DashboardController::class)->name('dashboard');
