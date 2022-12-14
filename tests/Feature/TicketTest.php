@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\Role;
+use App\Models\TemporaryFile;
 use App\Models\User;
 use App\Models\Ticket;
 use Illuminate\Support\Facades\Storage;
@@ -237,19 +238,34 @@ class TicketTest extends TestCase
     {
         Storage::fake('public');
         $user = User::factory()->create();
+        $folder = uniqid() . '-' . now()->timestamp;
         $fileUpload = UploadedFile::fake()->image('avatar.jpg');
+        $fileName = $fileUpload->hashName();
+        $storage = Storage::disk('public'); 
+        $storage->put('uploads/tmp/' . $fileName, 'Your content here');
 
-        $response = $this->actingAs($user)->post('/tickets', [
+        TemporaryFile::create([
+            'folder' => $folder,
+            'file_name' => $fileName,
+        ]);
+
+        $this->actingAs($user)->post('/tickets', [
             'title' => 'test title',
             'message' => 'test message',
             'priority' => 'low',
-            'upload' => $fileUpload,
+            'upload' => $folder,
             'labels' => [1],
             'categories' => [1],
         ]);
-
-        $ticket = Ticket::latest()->first();
-        $this->assertEquals($fileUpload->hashName(), $ticket->upload);
-        Storage::disk('public')->assertExists('uploads/' . $user->id . '/'. $fileUpload->hashName());
+        
+        $storage->move(
+            'uploads/tmp/' . $fileName, 
+            'uploads/' . Ticket::first()->id . '/' . $fileName
+        );
+        
+        $storage->assertMissing('uploads/tmp/' . $fileName);
+        $storage->assertExists('uploads/' . $user->id . '/'. $fileName);
+        $this->assertDatabaseEmpty('temporary_files');
+        $this->assertDatabaseHas('tickets', ['upload' => $fileName]);
     }
 }
