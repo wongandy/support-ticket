@@ -4,13 +4,14 @@ namespace App\Actions;
 
 use App\Models\TemporaryFile;
 use Illuminate\Support\Facades\Storage;
+use Coderflex\LaravelTicket\Models\Ticket;
 
 class UploadFileAction
 {
-    public function execute($ticket, $folder): void
+    public function execute(Ticket $ticket, string $folder): void
     {
         $temporaryFile = TemporaryFile::where('folder', $folder)->first();
-
+        
         $ticket->update([
             'upload' => $temporaryFile->file_name,
         ]);

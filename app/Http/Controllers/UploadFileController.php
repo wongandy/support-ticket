@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class UploadFileController extends Controller
 {
-    public function store(Request $request)
+    public function store(Request $request): string
     {
         if ($request->hasFile('upload')) {
             $folder = uniqid() . '-' . now()->timestamp;
@@ -27,7 +27,7 @@ class UploadFileController extends Controller
         return '';
     }
 
-    public function destroy(Request $request)
+    public function destroy(Request $request): string
     {
         TemporaryFile::where('folder', $request->getContent())->first()->delete();
         Storage::disk('public')->deleteDirectory('uploads/tmp/' . $request->getContent());
