@@ -4,7 +4,7 @@ namespace App\Actions;
 
 use App\Models\TemporaryFile;
 use Illuminate\Support\Facades\Storage;
-use Coderflex\LaravelTicket\Models\Ticket;
+use App\Models\Ticket;
 
 class UploadFileAction
 {
@@ -20,14 +20,15 @@ class UploadFileAction
 
         $storage = Storage::disk('public');
 
-        if ($storage->exists('uploads/' . $ticket->id)) {
-            $storage->deleteDirectory('uploads/' . $ticket->id);
+        if ($ticket->getFirstMedia('tickets_attachments')) {
+            if ($storage->exists($ticket->getFirstMedia('tickets_attachments')->id)) {
+                $storage->deleteDirectory($ticket->getFirstMedia('tickets_attachments')->id);
+            }
+
+            $ticket->getFirstMedia('tickets_attachments')->delete();
         }
-        
-        $storage->move(
-            'uploads/tmp/' . $folder . '/' . $temporaryFile->file_name, 
-            'uploads/' . $ticket->id . '/' . $temporaryFile->file_name
-        );
+
+        $ticket->addMedia(storage_path('app/public/uploads/tmp/' . $folder . '/' . $temporaryFile->file_name))->toMediaCollection('tickets_attachments');
             
         $storage->deleteDirectory('uploads/tmp/' . $folder);
     }
