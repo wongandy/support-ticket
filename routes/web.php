@@ -1,11 +1,14 @@
 <?php
 
+use App\Models\Ticket;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LabelController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DownloadAttachmentController;
+use App\Http\Controllers\DownloadAttachmentsController;
 use App\Http\Controllers\UploadFileController;
 
 /*
@@ -32,7 +35,8 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::resource('tickets', TicketController::class);
     Route::post('upload', [UploadFileController::class, 'store']);
     Route::delete('delete-upload', [UploadFileController::class, 'destroy']);
-
+    Route::get('download/attachment/{mediaItem}', DownloadAttachmentController::class)->name('download.attachment');
+    
     Route::middleware(['role:admin|agent'])->group(function () {
         Route::get('/dashboard', DashboardController::class)->name('dashboard');
 

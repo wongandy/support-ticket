@@ -34,6 +34,7 @@
                         <th class="px-4 py-3">Title</th>
                         <th class="px-4 py-3">Author</th>
                         <th class="px-4 py-3">Status</th>
+                        <th class="px-4 py-3">File Uploaded</th>
                         <th class="px-4 py-3">Priority</th>
                         <th class="px-4 py-3">Categories</th>
                         <th class="px-4 py-3">Labels</th>
@@ -54,6 +55,11 @@
                                 </td>
                                 <td class="px-4 py-3 text-sm">
                                     {{ $ticket->status }}
+                                </td>
+                                <td class="px-4 py-3 text-sm">
+                                    @if ($ticket->getFirstMedia('tickets_attachments'))
+                                        <a href="{{ route('download.attachment', $ticket->getFirstMedia('tickets_attachments')) }}" class="hover:underline">{{ $ticket->getFirstMedia('tickets_attachments')->file_name }}</a>
+                                    @endif
                                 </td>
                                 <td class="px-4 py-3 text-sm">
                                     {{ $ticket->priority }}

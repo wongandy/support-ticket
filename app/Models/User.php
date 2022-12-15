@@ -58,4 +58,9 @@ class User extends Authenticatable implements CanUseTickets
     {
         return $this->belongsTo(Role::class);
     }
+
+    public function tickets(): HasMany
+    {
+        return $this->hasMany(Ticket::class, 'user_id');
+    }
 }

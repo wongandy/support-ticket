@@ -13,9 +13,9 @@ class UploadFileController extends Controller
         if ($request->hasFile('upload')) {
             $folder = uniqid() . '-' . now()->timestamp;
             $file = $request->file('upload');
-            $fileName = $file->hashName();
-            $file->store('uploads/tmp/' . $folder, 'public');
-
+            $fileName = $file->getClientOriginalName();
+            $file->storeAs('uploads/tmp/' . $folder, $fileName,'public');
+            
             TemporaryFile::create([
                 'folder' => $folder,
                 'file_name' => $fileName,
